@@ -1,1 +1,505 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Una sorpresa para ti</title>
 
+  <meta name="description" content="Una sorpresa especial.">
+  <meta name="theme-color" content="#120609">
+  <meta name="robots" content="noindex,nofollow">
+
+  <style>
+    :root{
+      --bg:#0b0608;
+      --bg-soft:#1a0b11;
+      --text:#f7f2ee;
+      --muted:rgba(255,255,255,.72);
+      --accent:#d9a441;
+      --overlay:rgba(0,0,0,.46);
+      --card:rgba(18,10,14,.34);
+      --border:rgba(255,255,255,.12);
+      --shadow:0 20px 60px rgba(0,0,0,.45);
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+    html,body{
+      margin:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    body{
+      position:relative;
+    }
+
+    .bg-layer{
+      position:fixed;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      transform:scale(1.03);
+      transition:opacity .8s ease, transform 1.2s ease;
+      opacity:0;
+      filter:brightness(.72);
+    }
+
+    .bg-layer.active{
+      opacity:1;
+      transform:scale(1);
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.62)),
+        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,.20) 55%, rgba(0,0,0,.48) 100%);
+      pointer-events:none;
+    }
+
+    .stage{
+      position:relative;
+      z-index:2;
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .slide{
+      position:absolute;
+      width:min(960px, calc(100vw - 32px));
+      max-width:960px;
+      text-align:center;
+      opacity:0;
+      transform:translateY(16px) scale(.985);
+      pointer-events:none;
+      transition:opacity .55s ease, transform .55s ease;
+    }
+
+    .slide.active{
+      opacity:1;
+      transform:translateY(0) scale(1);
+      pointer-events:auto;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      padding:34px 28px;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:13px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(34px, 6vw, 72px);
+      line-height:1.02;
+      font-weight:800;
+      letter-spacing:-0.03em;
+      text-wrap:balance;
+    }
+
+    .lead{
+      margin:18px auto 0;
+      font-size:clamp(17px, 2.2vw, 24px);
+      line-height:1.45;
+      color:var(--muted);
+      max-width:760px;
+      text-wrap:balance;
+    }
+
+    .tap{
+      margin-top:28px;
+      font-size:14px;
+      color:rgba(255,255,255,.62);
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .countdown{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(70px, 140px));
+      gap:14px;
+      justify-content:center;
+      margin-top:30px;
+    }
+
+    .time-box{
+      padding:18px 10px 14px;
+      border-radius:20px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .time-num{
+      display:block;
+      font-size:clamp(28px, 5vw, 48px);
+      line-height:1;
+      font-weight:800;
+    }
+
+    .time-label{
+      display:block;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .final-title{
+      font-size:clamp(40px, 7vw, 88px);
+      line-height:.98;
+      font-weight:900;
+      letter-spacing:-0.045em;
+      margin:0;
+      color:#fff4df;
+      text-shadow:0 6px 28px rgba(0,0,0,.45);
+    }
+
+    .highlight{
+      color:var(--accent);
+    }
+
+    .details{
+      margin-top:22px;
+      display:inline-flex;
+      flex-direction:column;
+      gap:10px;
+      padding:18px 22px;
+      border-radius:22px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    .details strong{
+      font-size:clamp(20px, 3.6vw, 30px);
+      letter-spacing:-0.02em;
+    }
+
+    .details span{
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .ticket{
+      margin:26px auto 0;
+      width:min(300px, 80vw);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 18px 40px rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+    }
+
+    .ticket img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    .nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:18px;
+      z-index:3;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+
+    .dots{
+      display:flex;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(6px);
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.28);
+      transition:transform .25s ease, background .25s ease;
+    }
+
+    .dot.active{
+      transform:scale(1.2);
+      background:var(--accent);
+    }
+
+    .hint-corner{
+      position:fixed;
+      right:16px;
+      top:16px;
+      z-index:3;
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:12px;
+      color:rgba(255,255,255,.72);
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(6px);
+    }
+
+    @media (max-width:760px){
+      .card{
+        padding:24px 18px;
+        border-radius:24px;
+      }
+      .countdown{
+        grid-template-columns:repeat(2, minmax(100px, 1fr));
+      }
+      .hint-corner{
+        top:auto;
+        bottom:78px;
+        right:50%;
+        transform:translateX(50%);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FONDOS -->
+  <div class="bg-layer active" id="bg"
+       style="background-image:
+         linear-gradient(rgba(18,6,9,.34), rgba(18,6,9,.34)),
+         url('https://manumartin3112.github.io/regaloCumple/assets/img/bg1.jpg');">
+  </div>
+
+  <div class="overlay"></div>
+
+  <div class="hint-corner">Toca la pantalla</div>
+
+  <main class="stage" id="stage">
+
+    <!-- SLIDE 1 -->
+    <section class="slide active" data-bg="bg1.jpg">
+      <div class="card">
+        <div class="eyebrow">Hay algo esperándote</div>
+        <h1>Falta muy poco para algo especial</h1>
+        <p class="lead">Todavía no te voy a decir qué es. Primero, mira cuánto queda.</p>
+
+        <div class="countdown" id="countdown">
+          <div class="time-box">
+            <span class="time-num" id="days">00</span>
+            <span class="time-label">Días</span>
+          </div>
+          <div class="time-box">
+            <span class="time-num" id="hours">00</span>
+            <span class="time-label">Horas</span>
+          </div>
+          <div class="time-box">
+            <span class="time-num" id="minutes">00</span>
+            <span class="time-label">Minutos</span>
+          </div>
+          <div class="time-box">
+            <span class="time-num" id="seconds">00</span>
+            <span class="time-label">Segundos</span>
+          </div>
+        </div>
+
+        <div class="tap">Toca para continuar</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide" data-bg="bg2.jpg">
+      <div class="card">
+        <div class="eyebrow">Un pequeño secreto</div>
+        <h1>No todos los regalos se envuelven</h1>
+        <p class="lead">Algunos no caben en una caja. Algunos se viven.</p>
+        <div class="tap">Toca para continuar</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide" data-bg="bg3.jpg">
+      <div class="card">
+        <div class="eyebrow">Una noche</div>
+        <h1>Quería regalarte algo más que una cosa</h1>
+        <p class="lead">Quería regalarte un momento. Una noche distinta. Un recuerdo futuro.</p>
+        <div class="tap">Toca para continuar</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide" data-bg="bg4.jpg">
+      <div class="card">
+        <div class="eyebrow">Empiezan las pistas</div>
+        <h1>Música en directo. Luces apagadas. Y nosotros allí.</h1>
+        <p class="lead">Ya casi te lo puedo decir.</p>
+        <div class="tap">Toca para continuar</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide" data-bg="bg5.jpg">
+      <div class="card">
+        <div class="eyebrow">Ahora sí</div>
+        <h1 class="final-title">Nos vamos a ver a <span class="highlight">Leiva</span></h1>
+
+        <div class="details">
+          <strong>Martes 8 de septiembre · 21:00</strong>
+          <span>Prepárate para una noche muy especial.</span>
+        </div>
+
+        <div class="ticket">
+          <img src="https://manumartin3112.github.io/regaloCumple/assets/img/entrada.png"
+               alt="Entrada del concierto"
+               onerror="this.parentElement.style.display='none'">
+        </div>
+
+        <div class="tap">Toca para ver el final</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide" data-bg="bg6.jpg">
+      <div class="card">
+        <div class="eyebrow">Tu regalo</div>
+        <h1>Este regalo era una noche contigo</h1>
+        <p class="lead">Y ahora ya lo sabes: nos vamos al concierto de Leiva.</p>
+        <div class="details">
+          <strong>8 de septiembre de 2026 · 21:00</strong>
+          <span>Puedes volver a tocar para empezar de nuevo.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="nav">
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <script>
+    const concertDate = new Date("2026-09-08T21:00:00");
+    const slides = [...document.querySelectorAll(".slide")];
+    const bg = document.getElementById("bg");
+    const dotsWrap = document.getElementById("dots");
+    let current = 0;
+    let locked = false;
+
+    // dots
+    slides.forEach((_, i) => {
+      const d = document.createElement("div");
+      d.className = "dot" + (i === 0 ? " active" : "");
+      dotsWrap.appendChild(d);
+    });
+    const dots = [...document.querySelectorAll(".dot")];
+
+    function setBackground(file){
+      bg.classList.remove("active");
+      setTimeout(() => {
+        bg.style.backgroundImage =
+          `linear-gradient(rgba(18,6,9,.34), rgba(18,6,9,.34)), url('https://manumartin3112.github.io/regaloCumple/assets/img/${file}')`;
+        bg.classList.add("active");
+      }, 180);
+    }
+
+    function showSlide(index){
+      if (locked) return;
+      locked = true;
+
+      slides[current].classList.remove("active");
+      dots[current].classList.remove("active");
+
+      current = index;
+      slides[current].classList.add("active");
+      dots[current].classList.add("active");
+
+      const bgFile = slides[current].dataset.bg;
+      if (bgFile) setBackground(bgFile);
+
+      setTimeout(() => locked = false, 560);
+    }
+
+    function nextSlide(){
+      if (current < slides.length - 1){
+        showSlide(current + 1);
+      } else {
+        showSlide(0);
+      }
+    }
+
+    document.getElementById("stage").addEventListener("click", (e) => {
+      const ignore = ["AUDIO", "BUTTON", "A"];
+      if (ignore.includes(e.target.tagName)) return;
+      nextSlide();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        nextSlide();
+      }
+      if (e.key === "ArrowLeft" && current > 0) {
+        e.preventDefault();
+        showSlide(current - 1);
+      }
+    });
+
+    function updateCountdown(){
+      const now = new Date();
+      const diff = concertDate - now;
+
+      const d = document.getElementById("days");
+      const h = document.getElementById("hours");
+      const m = document.getElementById("minutes");
+      const s = document.getElementById("seconds");
+
+      if (diff <= 0){
+        d.textContent = "00";
+        h.textContent = "00";
+        m.textContent = "00";
+        s.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      d.textContent = String(days).padStart(2, "0");
+      h.textContent = String(hours).padStart(2, "0");
+      m.textContent = String(minutes).padStart(2, "0");
+      s.textContent = String(seconds).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
