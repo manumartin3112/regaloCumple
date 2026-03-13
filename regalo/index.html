@@ -182,6 +182,7 @@
       line-height:1.5;
       color:var(--muted);
       text-wrap:balance;
+      white-space:pre-line;
     }
 
     .accent{
@@ -257,65 +258,7 @@
     .details span{
       font-size:16px;
       color:var(--muted);
-    }
-
-    .ticket{
-      width:min(340px, 82vw);
-      margin:26px auto 0;
-      border-radius:24px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 18px 46px rgba(0,0,0,.42);
-      background:rgba(255,255,255,.05);
-      transform:translateY(0);
-      transition:transform .35s ease;
-    }
-
-    .ticket:hover{
-      transform:translateY(-2px);
-    }
-
-    .ticket img{
-      display:block;
-      width:100%;
-      height:auto;
-    }
-
-    .cta-row{
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:28px;
-    }
-
-    .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      border-radius:999px;
-      padding:13px 20px;
-      font-size:14px;
-      font-weight:800;
-      letter-spacing:.02em;
-      transition:transform .18s ease, filter .18s ease, background .18s ease;
-    }
-
-    .btn:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.03);
-    }
-
-    .btn.primary{
-      background:var(--gold);
-      color:#24170f;
-      box-shadow:0 8px 24px rgba(215,164,70,.28);
-    }
-
-    .btn.secondary{
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-      border:1px solid rgba(255,255,255,.14);
+      white-space:pre-line;
     }
 
     .progress{
@@ -426,6 +369,7 @@
 
   <main class="stage" id="stage">
 
+    <!-- 1 -->
     <section class="slide active" data-bg="bg1.jpg">
       <div class="card">
         <div class="eyebrow">Hay algo esperándote</div>
@@ -455,67 +399,68 @@
       </div>
     </section>
 
+    <!-- 2 -->
     <section class="slide" data-bg="bg2.jpg">
       <div class="card">
         <div class="eyebrow">Un pequeño secreto</div>
         <h1>No todos los regalos se envuelven</h1>
-        <p class="lead">Algunos no caben en una caja. Algunos se sienten antes de entenderse.</p>
+        <p class="lead">Algunos no caben en una caja. Algunos se viven.</p>
         <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
+    <!-- 3 -->
     <section class="slide" data-bg="bg3.jpg">
       <div class="card">
         <div class="eyebrow">Una noche</div>
         <h1>Quería regalarte algo más que una cosa</h1>
-        <p class="lead">Quería regalarte un momento. Uno de esos que luego se convierten en recuerdo.</p>
+        <p class="lead">Quería regalarte un momento. Una noche distinta. Un recuerdo futuro.</p>
         <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
+    <!-- 4 -->
     <section class="slide" data-bg="bg4.jpg">
       <div class="card">
-        <div class="eyebrow">Empiezan las pistas</div>
-        <h1>Música en directo. Luces apagadas. Y nosotros allí.</h1>
-        <p class="lead">Ya casi te lo puedo decir.</p>
+        <div class="eyebrow">Más cerca</div>
+        <h1>Una noche distinta</h1>
+        <p class="lead">Con música.
+Con emoción.
+Y conmigo.</p>
         <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
+    <!-- 5 -->
     <section class="slide" data-bg="bg5.jpg">
       <div class="card">
-        <div class="eyebrow">Ahora sí</div>
-        <h1>Nos vamos a ver a <span class="accent">Leiva</span></h1>
-
-        <div class="details">
-          <strong>Martes 8 de septiembre · 21:00</strong>
-          <span>Prepárate para una noche muy especial.</span>
-        </div>
-
-        <div class="ticket">
-          <img src="https://manumartin3112.github.io/regaloCumple/assets/img/entrada.png"
-               alt="Entrada del concierto"
-               onerror="this.parentElement.style.display='none'">
-        </div>
-
+        <div class="eyebrow">Casi casi</div>
+        <h1>Hay noches que se sienten especiales incluso antes de empezar</h1>
+        <p class="lead">Y esta es una de ellas.</p>
         <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
+    <!-- 6 -->
     <section class="slide" data-bg="bg6.jpg">
       <div class="card">
-        <div class="eyebrow">Tu regalo</div>
-        <h1>Este regalo era una noche contigo</h1>
-        <p class="lead">Y ahora ya lo sabes: nos vamos al concierto de Leiva.</p>
+        <div class="eyebrow">Ahora sí</div>
+        <h1>Vale, ya no te hago esperar más</h1>
+        <p class="lead">Nos vamos a ver a <span class="accent">Leiva</span>.</p>
+        <div class="hint pulse">Toca para continuar</div>
+      </div>
+    </section>
 
+    <!-- 7 -->
+    <section class="slide" data-bg="bg7.jpg">
+      <div class="card">
+        <div class="eyebrow">Tu sorpresa</div>
+        <h1>Martes 8 de septiembre · 21:00</h1>
         <div class="details">
-          <strong>8 de septiembre de 2026 · 21:00</strong>
-          <span>Guarda este momento. Luego empezará el concierto.</span>
+          <strong>Prepárate.</strong>
+          <span>Porque esta noche ya tiene nombre.</span>
         </div>
-
-        <div class="cta-row">
-          <button class="btn primary" id="restartBtn">Volver a empezar</button>
-        </div>
+        <div class="hint pulse">Toca para volver al principio</div>
       </div>
     </section>
 
@@ -532,7 +477,6 @@
     const dotsWrap = document.getElementById("dots");
     const progressBar = document.getElementById("progressBar");
     const stage = document.getElementById("stage");
-    const restartBtn = document.getElementById("restartBtn");
 
     let current = 0;
     let locked = false;
@@ -588,6 +532,8 @@
     function nextSlide(){
       if (current < slides.length - 1){
         showSlide(current + 1);
+      } else {
+        showSlide(0);
       }
     }
 
@@ -595,10 +541,6 @@
       if (current > 0){
         showSlide(current - 1);
       }
-    }
-
-    function restartExperience(){
-      showSlide(0);
     }
 
     stage.addEventListener("click", (e) => {
@@ -615,11 +557,6 @@
         e.preventDefault();
         prevSlide();
       }
-    });
-
-    restartBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      restartExperience();
     });
 
     function updateCountdown(){
