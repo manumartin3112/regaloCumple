@@ -11,25 +11,29 @@
 
   <style>
     :root{
-      --bg:#0b0608;
-      --bg-soft:#1a0b11;
-      --text:#f7f2ee;
-      --muted:rgba(255,255,255,.72);
-      --accent:#d9a441;
-      --overlay:rgba(0,0,0,.46);
-      --card:rgba(18,10,14,.34);
+      --bg:#090507;
+      --wine:#16060a;
+      --wine-2:#2a0e16;
+      --gold:#d7a446;
+      --text:#f8f4ef;
+      --muted:rgba(255,255,255,.76);
+      --soft:rgba(255,255,255,.08);
       --border:rgba(255,255,255,.12);
-      --shadow:0 20px 60px rgba(0,0,0,.45);
+      --card:rgba(16,10,12,.34);
+      --shadow:0 24px 80px rgba(0,0,0,.50);
     }
 
-    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
 
     html,body{
-      margin:0;
       width:100%;
       height:100%;
+      margin:0;
       overflow:hidden;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
       background:var(--bg);
       color:var(--text);
     }
@@ -38,30 +42,50 @@
       position:relative;
     }
 
-    .bg-layer{
+    .bg{
       position:fixed;
       inset:0;
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      transform:scale(1.03);
-      transition:opacity .8s ease, transform 1.2s ease;
+      transform:scale(1.08);
+      filter:brightness(.62) saturate(.95);
+      transition:
+        opacity 1s ease,
+        transform 2.8s ease,
+        filter 1s ease;
       opacity:0;
-      filter:brightness(.72);
     }
 
-    .bg-layer.active{
+    .bg.active{
       opacity:1;
       transform:scale(1);
+      filter:brightness(.7) saturate(1);
     }
 
-    .overlay{
+    .veil{
       position:fixed;
       inset:0;
       background:
-        linear-gradient(to bottom, rgba(0,0,0,.30), rgba(0,0,0,.62)),
-        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,.20) 55%, rgba(0,0,0,.48) 100%);
+        radial-gradient(circle at center, rgba(255,255,255,.02) 0%, transparent 35%),
+        linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.56)),
+        radial-gradient(circle at 50% 20%, transparent 0%, rgba(0,0,0,.18) 55%, rgba(0,0,0,.52) 100%);
       pointer-events:none;
+      z-index:1;
+    }
+
+    .grain{
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      opacity:.08;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.35) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 40%, rgba(255,255,255,.22) 0 1px, transparent 1px),
+        radial-gradient(circle at 40% 70%, rgba(255,255,255,.20) 0 1px, transparent 1px);
+      background-size: 160px 160px, 220px 220px, 180px 180px;
+      mix-blend-mode:screen;
     }
 
     .stage{
@@ -69,21 +93,22 @@
       z-index:2;
       width:100%;
       height:100%;
+      padding:24px;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:24px;
     }
 
     .slide{
       position:absolute;
-      width:min(960px, calc(100vw - 32px));
-      max-width:960px;
-      text-align:center;
+      width:min(980px, calc(100vw - 32px));
       opacity:0;
-      transform:translateY(16px) scale(.985);
+      transform:translateY(18px) scale(.985);
+      transition:
+        opacity .65s ease,
+        transform .75s cubic-bezier(.2,.8,.2,1);
       pointer-events:none;
-      transition:opacity .55s ease, transform .55s ease;
+      text-align:center;
     }
 
     .slide.active{
@@ -93,128 +118,161 @@
     }
 
     .card{
-      background:var(--card);
+      position:relative;
+      overflow:hidden;
+      padding:38px 28px 34px;
+      border-radius:30px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)),
+        linear-gradient(180deg, rgba(22,6,10,.45), rgba(22,6,10,.22));
       border:1px solid var(--border);
-      border-radius:28px;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      padding:34px 28px;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.08), transparent 28%, transparent 72%, rgba(255,255,255,.05));
+      pointer-events:none;
     }
 
     .eyebrow{
-      display:inline-block;
-      padding:8px 14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:9px 15px;
       border-radius:999px;
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--muted);
       border:1px solid rgba(255,255,255,.14);
       background:rgba(255,255,255,.05);
-      color:var(--muted);
-      font-size:13px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
       margin-bottom:18px;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--gold);
+      box-shadow:0 0 10px rgba(215,164,70,.55);
     }
 
     h1{
       margin:0;
-      font-size:clamp(34px, 6vw, 72px);
-      line-height:1.02;
-      font-weight:800;
-      letter-spacing:-0.03em;
+      font-size:clamp(36px, 6vw, 78px);
+      line-height:.98;
+      letter-spacing:-.045em;
+      font-weight:900;
       text-wrap:balance;
+      text-shadow:0 10px 30px rgba(0,0,0,.24);
     }
 
     .lead{
+      max-width:760px;
       margin:18px auto 0;
       font-size:clamp(17px, 2.2vw, 24px);
-      line-height:1.45;
+      line-height:1.5;
       color:var(--muted);
-      max-width:760px;
       text-wrap:balance;
     }
 
-    .tap{
-      margin-top:28px;
-      font-size:14px;
-      color:rgba(255,255,255,.62);
-      letter-spacing:.06em;
-      text-transform:uppercase;
+    .accent{
+      color:var(--gold);
     }
 
     .countdown{
+      margin-top:30px;
       display:grid;
-      grid-template-columns:repeat(4, minmax(70px, 140px));
+      grid-template-columns:repeat(4, minmax(78px, 140px));
       gap:14px;
       justify-content:center;
-      margin-top:30px;
     }
 
-    .time-box{
-      padding:18px 10px 14px;
-      border-radius:20px;
+    .time{
+      padding:18px 12px 14px;
+      border-radius:22px;
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.12);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
     }
 
-    .time-num{
+    .time strong{
       display:block;
-      font-size:clamp(28px, 5vw, 48px);
+      font-size:clamp(28px, 5vw, 52px);
       line-height:1;
-      font-weight:800;
+      font-weight:900;
     }
 
-    .time-label{
+    .time span{
       display:block;
       margin-top:8px;
-      color:var(--muted);
       font-size:12px;
-      letter-spacing:.12em;
+      letter-spacing:.14em;
       text-transform:uppercase;
+      color:var(--muted);
     }
 
-    .final-title{
-      font-size:clamp(40px, 7vw, 88px);
-      line-height:.98;
-      font-weight:900;
-      letter-spacing:-0.045em;
-      margin:0;
-      color:#fff4df;
-      text-shadow:0 6px 28px rgba(0,0,0,.45);
+    .hint{
+      margin-top:28px;
+      font-size:13px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.62);
     }
 
-    .highlight{
-      color:var(--accent);
+    .hint.pulse{
+      animation:pulseHint 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseHint{
+      0%,100%{opacity:.55}
+      50%{opacity:1}
     }
 
     .details{
-      margin-top:22px;
       display:inline-flex;
       flex-direction:column;
       gap:10px;
+      margin-top:22px;
       padding:18px 22px;
       border-radius:22px;
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.14);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
     }
 
     .details strong{
-      font-size:clamp(20px, 3.6vw, 30px);
-      letter-spacing:-0.02em;
+      font-size:clamp(22px, 3.8vw, 34px);
+      letter-spacing:-.03em;
     }
 
     .details span{
-      color:var(--muted);
       font-size:16px;
+      color:var(--muted);
     }
 
     .ticket{
+      width:min(340px, 82vw);
       margin:26px auto 0;
-      width:min(300px, 80vw);
-      border-radius:22px;
+      border-radius:24px;
       overflow:hidden;
-      box-shadow:0 18px 40px rgba(0,0,0,.45);
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);
+      box-shadow:0 18px 46px rgba(0,0,0,.42);
+      background:rgba(255,255,255,.05);
+      transform:translateY(0);
+      transition:transform .35s ease;
+    }
+
+    .ticket:hover{
+      transform:translateY(-2px);
     }
 
     .ticket img{
@@ -223,12 +281,71 @@
       height:auto;
     }
 
+    .cta-row{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:13px 20px;
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:.02em;
+      transition:transform .18s ease, filter .18s ease, background .18s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.03);
+    }
+
+    .btn.primary{
+      background:var(--gold);
+      color:#24170f;
+      box-shadow:0 8px 24px rgba(215,164,70,.28);
+    }
+
+    .btn.secondary{
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    .progress{
+      position:fixed;
+      left:16px;
+      right:16px;
+      top:16px;
+      z-index:4;
+      height:6px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.08);
+      backdrop-filter:blur(6px);
+    }
+
+    .progress-bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, #b77535, var(--gold));
+      border-radius:999px;
+      transition:width .45s ease;
+      box-shadow:0 0 18px rgba(215,164,70,.35);
+    }
+
     .nav{
       position:fixed;
       left:0;
       right:0;
       bottom:18px;
-      z-index:3;
+      z-index:4;
       display:flex;
       justify-content:center;
       pointer-events:none;
@@ -239,7 +356,7 @@
       gap:8px;
       padding:10px 14px;
       border-radius:999px;
-      background:rgba(0,0,0,.22);
+      background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(6px);
     }
@@ -248,41 +365,44 @@
       width:8px;
       height:8px;
       border-radius:50%;
-      background:rgba(255,255,255,.28);
+      background:rgba(255,255,255,.26);
       transition:transform .25s ease, background .25s ease;
     }
 
     .dot.active{
-      transform:scale(1.2);
-      background:var(--accent);
+      transform:scale(1.25);
+      background:var(--gold);
+      box-shadow:0 0 12px rgba(215,164,70,.45);
     }
 
-    .hint-corner{
+    .corner-tip{
       position:fixed;
       right:16px;
-      top:16px;
-      z-index:3;
+      top:28px;
+      z-index:4;
       padding:10px 14px;
       border-radius:999px;
       font-size:12px;
       color:rgba(255,255,255,.72);
-      background:rgba(0,0,0,.22);
+      background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(6px);
     }
 
     @media (max-width:760px){
       .card{
-        padding:24px 18px;
+        padding:26px 18px 24px;
         border-radius:24px;
       }
+
       .countdown{
-        grid-template-columns:repeat(2, minmax(100px, 1fr));
+        grid-template-columns:repeat(2, minmax(110px, 1fr));
       }
-      .hint-corner{
+
+      .corner-tip{
         top:auto;
-        bottom:78px;
         right:50%;
+        bottom:74px;
         transform:translateX(50%);
       }
     }
@@ -290,84 +410,82 @@
 </head>
 <body>
 
-  <!-- FONDOS -->
-  <div class="bg-layer active" id="bg"
+  <div class="bg active" id="bg"
        style="background-image:
-         linear-gradient(rgba(18,6,9,.34), rgba(18,6,9,.34)),
-         url('https://manumartin3112.github.io/regaloCumple/assets/img/bg1.jpg');">
+         linear-gradient(rgba(18,6,9,.28), rgba(18,6,9,.28)),
+         url('https://manumartin3112.github.io/regaloCumple/assets/img/bg1.jpg');"></div>
+
+  <div class="veil"></div>
+  <div class="grain"></div>
+
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
   </div>
 
-  <div class="overlay"></div>
-
-  <div class="hint-corner">Toca la pantalla</div>
+  <div class="corner-tip">Toca la pantalla</div>
 
   <main class="stage" id="stage">
 
-    <!-- SLIDE 1 -->
     <section class="slide active" data-bg="bg1.jpg">
       <div class="card">
         <div class="eyebrow">Hay algo esperándote</div>
         <h1>Falta muy poco para algo especial</h1>
         <p class="lead">Todavía no te voy a decir qué es. Primero, mira cuánto queda.</p>
 
-        <div class="countdown" id="countdown">
-          <div class="time-box">
-            <span class="time-num" id="days">00</span>
-            <span class="time-label">Días</span>
+        <div class="countdown">
+          <div class="time">
+            <strong id="days">00</strong>
+            <span>Días</span>
           </div>
-          <div class="time-box">
-            <span class="time-num" id="hours">00</span>
-            <span class="time-label">Horas</span>
+          <div class="time">
+            <strong id="hours">00</strong>
+            <span>Horas</span>
           </div>
-          <div class="time-box">
-            <span class="time-num" id="minutes">00</span>
-            <span class="time-label">Minutos</span>
+          <div class="time">
+            <strong id="minutes">00</strong>
+            <span>Minutos</span>
           </div>
-          <div class="time-box">
-            <span class="time-num" id="seconds">00</span>
-            <span class="time-label">Segundos</span>
+          <div class="time">
+            <strong id="seconds">00</strong>
+            <span>Segundos</span>
           </div>
         </div>
 
-        <div class="tap">Toca para continuar</div>
+        <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
-    <!-- SLIDE 2 -->
     <section class="slide" data-bg="bg2.jpg">
       <div class="card">
         <div class="eyebrow">Un pequeño secreto</div>
         <h1>No todos los regalos se envuelven</h1>
-        <p class="lead">Algunos no caben en una caja. Algunos se viven.</p>
-        <div class="tap">Toca para continuar</div>
+        <p class="lead">Algunos no caben en una caja. Algunos se sienten antes de entenderse.</p>
+        <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
-    <!-- SLIDE 3 -->
     <section class="slide" data-bg="bg3.jpg">
       <div class="card">
         <div class="eyebrow">Una noche</div>
         <h1>Quería regalarte algo más que una cosa</h1>
-        <p class="lead">Quería regalarte un momento. Una noche distinta. Un recuerdo futuro.</p>
-        <div class="tap">Toca para continuar</div>
+        <p class="lead">Quería regalarte un momento. Uno de esos que luego se convierten en recuerdo.</p>
+        <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
-    <!-- SLIDE 4 -->
     <section class="slide" data-bg="bg4.jpg">
       <div class="card">
         <div class="eyebrow">Empiezan las pistas</div>
         <h1>Música en directo. Luces apagadas. Y nosotros allí.</h1>
         <p class="lead">Ya casi te lo puedo decir.</p>
-        <div class="tap">Toca para continuar</div>
+        <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
-    <!-- SLIDE 5 -->
     <section class="slide" data-bg="bg5.jpg">
       <div class="card">
         <div class="eyebrow">Ahora sí</div>
-        <h1 class="final-title">Nos vamos a ver a <span class="highlight">Leiva</span></h1>
+        <h1>Nos vamos a ver a <span class="accent">Leiva</span></h1>
 
         <div class="details">
           <strong>Martes 8 de septiembre · 21:00</strong>
@@ -380,19 +498,23 @@
                onerror="this.parentElement.style.display='none'">
         </div>
 
-        <div class="tap">Toca para ver el final</div>
+        <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
 
-    <!-- SLIDE 6 -->
     <section class="slide" data-bg="bg6.jpg">
       <div class="card">
         <div class="eyebrow">Tu regalo</div>
         <h1>Este regalo era una noche contigo</h1>
         <p class="lead">Y ahora ya lo sabes: nos vamos al concierto de Leiva.</p>
+
         <div class="details">
           <strong>8 de septiembre de 2026 · 21:00</strong>
-          <span>Puedes volver a tocar para empezar de nuevo.</span>
+          <span>Guarda este momento. Luego empezará el concierto.</span>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn primary" id="restartBtn">Volver a empezar</button>
         </div>
       </div>
     </section>
@@ -408,66 +530,96 @@
     const slides = [...document.querySelectorAll(".slide")];
     const bg = document.getElementById("bg");
     const dotsWrap = document.getElementById("dots");
+    const progressBar = document.getElementById("progressBar");
+    const stage = document.getElementById("stage");
+    const restartBtn = document.getElementById("restartBtn");
+
     let current = 0;
     let locked = false;
 
-    // dots
+    // Dots
     slides.forEach((_, i) => {
-      const d = document.createElement("div");
-      d.className = "dot" + (i === 0 ? " active" : "");
-      dotsWrap.appendChild(d);
+      const dot = document.createElement("div");
+      dot.className = "dot" + (i === 0 ? " active" : "");
+      dotsWrap.appendChild(dot);
     });
     const dots = [...document.querySelectorAll(".dot")];
+
+    function vibrate(ms = 18){
+      if (navigator.vibrate) navigator.vibrate(ms);
+    }
+
+    function updateProgress(){
+      const percent = ((current + 1) / slides.length) * 100;
+      progressBar.style.width = percent + "%";
+    }
 
     function setBackground(file){
       bg.classList.remove("active");
       setTimeout(() => {
         bg.style.backgroundImage =
-          `linear-gradient(rgba(18,6,9,.34), rgba(18,6,9,.34)), url('https://manumartin3112.github.io/regaloCumple/assets/img/${file}')`;
+          `linear-gradient(rgba(18,6,9,.28), rgba(18,6,9,.28)), url('https://manumartin3112.github.io/regaloCumple/assets/img/${file}')`;
         bg.classList.add("active");
-      }, 180);
+      }, 170);
     }
 
     function showSlide(index){
-      if (locked) return;
+      if (locked || index < 0 || index >= slides.length) return;
       locked = true;
 
       slides[current].classList.remove("active");
       dots[current].classList.remove("active");
 
       current = index;
-      slides[current].classList.add("active");
-      dots[current].classList.add("active");
 
       const bgFile = slides[current].dataset.bg;
       if (bgFile) setBackground(bgFile);
 
-      setTimeout(() => locked = false, 560);
+      setTimeout(() => {
+        slides[current].classList.add("active");
+        dots[current].classList.add("active");
+        updateProgress();
+        vibrate(12);
+      }, 40);
+
+      setTimeout(() => locked = false, 700);
     }
 
     function nextSlide(){
       if (current < slides.length - 1){
         showSlide(current + 1);
-      } else {
-        showSlide(0);
       }
     }
 
-    document.getElementById("stage").addEventListener("click", (e) => {
-      const ignore = ["AUDIO", "BUTTON", "A"];
-      if (ignore.includes(e.target.tagName)) return;
+    function prevSlide(){
+      if (current > 0){
+        showSlide(current - 1);
+      }
+    }
+
+    function restartExperience(){
+      showSlide(0);
+    }
+
+    stage.addEventListener("click", (e) => {
+      if (["BUTTON","A"].includes(e.target.tagName)) return;
       nextSlide();
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter") {
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter"){
         e.preventDefault();
         nextSlide();
       }
-      if (e.key === "ArrowLeft" && current > 0) {
+      if (e.key === "ArrowLeft"){
         e.preventDefault();
-        showSlide(current - 1);
+        prevSlide();
       }
+    });
+
+    restartBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      restartExperience();
     });
 
     function updateCountdown(){
@@ -499,6 +651,7 @@
     }
 
     updateCountdown();
+    updateProgress();
     setInterval(updateCountdown, 1000);
   </script>
 </body>
