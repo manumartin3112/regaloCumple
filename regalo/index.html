@@ -63,6 +63,20 @@
       filter:brightness(.95) saturate(1.08);
     }
 
+
+    .bg.fit-device{
+      background-size:contain;
+      background-position:center center;
+      background-color:#090507;
+    }
+    
+    @media (max-width: 760px){
+      .bg.fit-device{
+        background-size:cover;
+        background-position:center center;
+      }
+    }
+
     .veil{
       position:fixed;
       inset:0;
@@ -431,128 +445,132 @@ Y conmigo.</p>
   </div>
 
   <script>
-    const concertDate = new Date("2026-09-08T21:00:00");
-    const slides = [...document.querySelectorAll(".slide")];
-    const bg = document.getElementById("bg");
-    const dotsWrap = document.getElementById("dots");
-    const stage = document.getElementById("stage");
-
-    let current = 0;
-    let locked = false;
-
-    // Dots
-    slides.forEach((_, i) => {
-      const dot = document.createElement("div");
-      dot.className = "dot" + (i === 0 ? " active" : "");
-      dotsWrap.appendChild(dot);
-    });
-    const dots = [...document.querySelectorAll(".dot")];
-
-    function vibrate(ms = 18){
-      if (navigator.vibrate) navigator.vibrate(ms);
-    }
-
-
-    function setBackground(file){
-      bg.classList.remove("active");
-      setTimeout(() => {
-        bg.style.backgroundImage =
-          `linear-gradient(rgba(18,6,9,.14), rgba(18,6,9,.14)), url('https://manumartin3112.github.io/regaloCumple/assets/img/${file}')`;
-        bg.classList.add("active");
-      }, 170);
-    }
-
-    function showSlide(index){
-      if (locked || index < 0 || index >= slides.length) return;
-      locked = true;
-
-      slides[current].classList.remove("active");
-      dots[current].classList.remove("active");
-
-      current = index;
-
-      const bgFile = slides[current].dataset.bg;
-      if (bgFile) setBackground(bgFile);
-
-      setTimeout(() => {
-        slides[current].classList.add("active");
-        dots[current].classList.add("active");
-
-        vibrate(12);
-      }, 40);
-
-      setTimeout(() => locked = false, 700);
-    }
-
-    function nextSlide(){
-      if (current < slides.length - 1){
-        showSlide(current + 1);
-      } else {
-        showSlide(0);
-      }
-    }
-
-    function prevSlide(){
-      if (current > 0){
-        showSlide(current - 1);
-      }
-    }
-
-    stage.addEventListener("click", (e) => {
-      if (["BUTTON","A"].includes(e.target.tagName)) return;
+      const concertDate = new Date("2026-09-08T21:00:00");
+      const slides = [...document.querySelectorAll(".slide")];
+      const bg = document.getElementById("bg");
+      const dotsWrap = document.getElementById("dots");
+      const stage = document.getElementById("stage");
     
-      const x = e.clientX;
-      const screenMiddle = window.innerWidth / 2;
+      let current = 0;
+      let locked = false;
     
-      if (x < screenMiddle) {
-        prevSlide();
-      } else {
-        nextSlide();
+      // Dots
+      slides.forEach((_, i) => {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === 0 ? " active" : "");
+        dotsWrap.appendChild(dot);
+      });
+      const dots = [...document.querySelectorAll(".dot")];
+    
+      function vibrate(ms = 18){
+        if (navigator.vibrate) navigator.vibrate(ms);
       }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter"){
-        e.preventDefault();
-        nextSlide();
+    
+      function setBackground(file){
+        bg.classList.remove("active");
+        bg.classList.remove("fit-device");
+    
+        // bg7 tiene tratamiento especial para que se adapte mejor al dispositivo
+        if (file === "bg7.jpg") {
+          bg.classList.add("fit-device");
+        }
+    
+        setTimeout(() => {
+          bg.style.backgroundImage =
+            `linear-gradient(rgba(18,6,9,.14), rgba(18,6,9,.14)), url('https://manumartin3112.github.io/regaloCumple/assets/img/${file}')`;
+          bg.classList.add("active");
+        }, 170);
       }
-      if (e.key === "ArrowLeft"){
-        e.preventDefault();
-        prevSlide();
+    
+      function showSlide(index){
+        if (locked || index < 0 || index >= slides.length) return;
+        locked = true;
+    
+        slides[current].classList.remove("active");
+        dots[current].classList.remove("active");
+    
+        current = index;
+    
+        const bgFile = slides[current].dataset.bg;
+        if (bgFile) setBackground(bgFile);
+    
+        setTimeout(() => {
+          slides[current].classList.add("active");
+          dots[current].classList.add("active");
+          vibrate(12);
+        }, 40);
+    
+        setTimeout(() => locked = false, 700);
       }
-    });
-
-    function updateCountdown(){
-      const now = new Date();
-      const diff = concertDate - now;
-
-      const d = document.getElementById("days");
-      const h = document.getElementById("hours");
-      const m = document.getElementById("minutes");
-      const s = document.getElementById("seconds");
-
-      if (diff <= 0){
-        d.textContent = "00";
-        h.textContent = "00";
-        m.textContent = "00";
-        s.textContent = "00";
-        return;
+    
+      function nextSlide(){
+        if (current < slides.length - 1){
+          showSlide(current + 1);
+        } else {
+          showSlide(0);
+        }
       }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      d.textContent = String(days).padStart(2, "0");
-      h.textContent = String(hours).padStart(2, "0");
-      m.textContent = String(minutes).padStart(2, "0");
-      s.textContent = String(seconds).padStart(2, "0");
-    }
-
-    updateCountdown();
-
-    setInterval(updateCountdown, 1000);
-  </script>
+    
+      function prevSlide(){
+        if (current > 0){
+          showSlide(current - 1);
+        }
+      }
+    
+      stage.addEventListener("click", (e) => {
+        if (["BUTTON","A"].includes(e.target.tagName)) return;
+    
+        const x = e.clientX;
+        const screenMiddle = window.innerWidth / 2;
+    
+        if (x < screenMiddle) {
+          prevSlide();
+        } else {
+          nextSlide();
+        }
+      });
+    
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter"){
+          e.preventDefault();
+          nextSlide();
+        }
+        if (e.key === "ArrowLeft"){
+          e.preventDefault();
+          prevSlide();
+        }
+      });
+    
+      function updateCountdown(){
+        const now = new Date();
+        const diff = concertDate - now;
+    
+        const d = document.getElementById("days");
+        const h = document.getElementById("hours");
+        const m = document.getElementById("minutes");
+        const s = document.getElementById("seconds");
+    
+        if (diff <= 0){
+          d.textContent = "00";
+          h.textContent = "00";
+          m.textContent = "00";
+          s.textContent = "00";
+          return;
+        }
+    
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+    
+        d.textContent = String(days).padStart(2, "0");
+        h.textContent = String(hours).padStart(2, "0");
+        m.textContent = String(minutes).padStart(2, "0");
+        s.textContent = String(seconds).padStart(2, "0");
+      }
+    
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html>
