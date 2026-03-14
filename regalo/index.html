@@ -381,7 +381,11 @@
   <div class="veil"></div>
   <div class="grain"></div>
 
-
+  <audio id="bgMusic" preload="auto">
+    <source src="https://manumartin3112.github.io/regaloCumple/assets/audio/cancion.mp3" type="audio/mp4">
+    <source src="https://manumartin3112.github.io/regaloCumple/assets/audio/cancion.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
 
 
   <main class="stage" id="stage">
@@ -463,10 +467,11 @@ Y conmigo.</p>
       <div class="card">
         <div class="eyebrow">Tu sorpresa</div>
         <h1>Martes 8 de septiembre · 21:00</h1>
-        <div class="details">
-         <!-- <strong>Prepárate.</strong>
+        <!--<div class="details">
+          <strong>Prepárate.</strong>
           <span>Porque esta noche ya tiene nombre.</span>
         </div>-->
+        <p class="lead">Sube el volúmen</p>
         <div class="hint pulse">Toca para continuar</div>
       </div>
     </section>
@@ -495,6 +500,7 @@ Y conmigo.</p>
       const bgBlur = document.getElementById("bgBlur");
       const dotsWrap = document.getElementById("dots");
       const stage = document.getElementById("stage");
+      const bgMusic = document.getElementById("bgMusic");
       
       bgBlur.style.backgroundImage =
         `linear-gradient(rgba(18,6,9,.12), rgba(18,6,9,.12)), url('https://manumartin3112.github.io/regaloCumple/assets/img/bg1.png')`;
@@ -533,6 +539,20 @@ Y conmigo.</p>
           bg.classList.add("active");
         }, 170);
       }
+
+      function handleMusicForSlide(index){
+        const isLeivaSlide = index === slides.length - 1;
+      
+        if (isLeivaSlide) {
+          bgMusic.currentTime = 0;
+          bgMusic.play().catch(() => {
+            console.log("El navegador ha bloqueado la reproducción automática.");
+          });
+        } else {
+          bgMusic.pause();
+          bgMusic.currentTime = 0;
+        }
+      }
     
       function showSlide(index){
         if (locked || index < 0 || index >= slides.length) return;
@@ -550,6 +570,7 @@ Y conmigo.</p>
           slides[current].classList.add("active");
           dots[current].classList.add("active");
           vibrate(12);
+          handleMusicForSlide(current);
         }, 40);
     
         setTimeout(() => locked = false, 700);
