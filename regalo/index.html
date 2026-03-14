@@ -165,6 +165,38 @@
       pointer-events:none;
     }
 
+    .slide-leiva .card{
+        background:
+          linear-gradient(180deg, rgba(78,56,44,.58), rgba(78,56,44,.50));
+        border:1px solid rgba(255,245,230,.18);
+        box-shadow:0 22px 70px rgba(0,0,0,.28);
+        backdrop-filter:blur(3px);
+        -webkit-backdrop-filter:blur(3px);
+      }
+      
+      .slide-leiva .card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:
+          linear-gradient(120deg, rgba(255,255,255,.05), transparent 32%, transparent 68%, rgba(255,255,255,.03));
+        pointer-events:none;
+      }
+      
+      .slide-leiva .eyebrow{
+        color:rgba(255,245,230,.82);
+        border:1px solid rgba(255,245,230,.16);
+        background:rgba(255,245,230,.06);
+      }
+      
+      .slide-leiva .lead{
+        color:rgba(255,244,236,.90);
+      }
+      
+      .slide-leiva .hint{
+        color:rgba(255,244,236,.78);
+      }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -441,7 +473,7 @@ Y conmigo.</p>
 
 
     <!-- 6 -->
-    <section class="slide" data-bg="bg7.jpg">
+    <section class="slide slide-leiva" data-bg="bg7.jpg">
       <div class="card">
         <div class="eyebrow">Ahora sí</div>
         <h1>Prepárate porque nos vamos a ver a Leiva</h1>
