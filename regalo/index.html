@@ -123,12 +123,11 @@
       padding:38px 28px 34px;
       border-radius:30px;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)),
-        linear-gradient(180deg, rgba(22,6,10,.45), rgba(22,6,10,.22));
-      border:1px solid var(--border);
+        linear-gradient(180deg, rgba(20,10,14,.78), rgba(20,10,14,.68));
+      border:1px solid rgba(255,255,255,.10);
       box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
+      backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px);
     }
 
     .card::before{
@@ -136,7 +135,7 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(120deg, rgba(255,255,255,.08), transparent 28%, transparent 72%, rgba(255,255,255,.05));
+        linear-gradient(120deg, rgba(255,255,255,.04), transparent 30%, transparent 70%, rgba(255,255,255,.03));
       pointer-events:none;
     }
 
@@ -261,27 +260,7 @@
       white-space:pre-line;
     }
 
-    .progress{
-      position:fixed;
-      left:16px;
-      right:16px;
-      top:16px;
-      z-index:4;
-      height:6px;
-      border-radius:999px;
-      overflow:hidden;
-      background:rgba(255,255,255,.08);
-      backdrop-filter:blur(6px);
-    }
-
-    .progress-bar{
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg, #b77535, var(--gold));
-      border-radius:999px;
-      transition:width .45s ease;
-      box-shadow:0 0 18px rgba(215,164,70,.35);
-    }
+  
 
     .nav{
       position:fixed;
@@ -318,19 +297,7 @@
       box-shadow:0 0 12px rgba(215,164,70,.45);
     }
 
-    .corner-tip{
-      position:fixed;
-      right:16px;
-      top:28px;
-      z-index:4;
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:12px;
-      color:rgba(255,255,255,.72);
-      background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(6px);
-    }
+    
 
     @media (max-width:760px){
       .card{
@@ -342,12 +309,7 @@
         grid-template-columns:repeat(2, minmax(110px, 1fr));
       }
 
-      .corner-tip{
-        top:auto;
-        right:50%;
-        bottom:74px;
-        transform:translateX(50%);
-      }
+      
     }
   </style>
 </head>
@@ -361,11 +323,8 @@
   <div class="veil"></div>
   <div class="grain"></div>
 
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
 
-  <div class="corner-tip">Toca la pantalla</div>
+
 
   <main class="stage" id="stage">
 
@@ -475,7 +434,6 @@ Y conmigo.</p>
     const slides = [...document.querySelectorAll(".slide")];
     const bg = document.getElementById("bg");
     const dotsWrap = document.getElementById("dots");
-    const progressBar = document.getElementById("progressBar");
     const stage = document.getElementById("stage");
 
     let current = 0;
@@ -493,10 +451,6 @@ Y conmigo.</p>
       if (navigator.vibrate) navigator.vibrate(ms);
     }
 
-    function updateProgress(){
-      const percent = ((current + 1) / slides.length) * 100;
-      progressBar.style.width = percent + "%";
-    }
 
     function setBackground(file){
       bg.classList.remove("active");
@@ -522,7 +476,7 @@ Y conmigo.</p>
       setTimeout(() => {
         slides[current].classList.add("active");
         dots[current].classList.add("active");
-        updateProgress();
+
         vibrate(12);
       }, 40);
 
@@ -545,7 +499,15 @@ Y conmigo.</p>
 
     stage.addEventListener("click", (e) => {
       if (["BUTTON","A"].includes(e.target.tagName)) return;
-      nextSlide();
+    
+      const x = e.clientX;
+      const screenMiddle = window.innerWidth / 2;
+    
+      if (x < screenMiddle) {
+        prevSlide();
+      } else {
+        nextSlide();
+      }
     });
 
     document.addEventListener("keydown", (e) => {
@@ -588,7 +550,7 @@ Y conmigo.</p>
     }
 
     updateCountdown();
-    updateProgress();
+
     setInterval(updateCountdown, 1000);
   </script>
 </body>
