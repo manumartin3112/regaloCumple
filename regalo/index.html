@@ -14,7 +14,7 @@
       --bg:#090507;
       --wine:#16060a;
       --wine-2:#2a0e16;
-      --gold:#d7a446;
+      --gold:#e0b45b;
       --text:#f8f4ef;
       --muted:rgba(255,255,255,.76);
       --soft:rgba(255,255,255,.08);
@@ -48,14 +48,20 @@
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
-      transform:scale(1.08);
-      filter:brightness(.62) saturate(.95);
+      transform:scale(1.06);
+      filter:brightness(.78) saturate(1.02);
       transition:
         opacity 1s ease,
-        transform 2.8s ease,
+        transform 2.4s ease,
         filter 1s ease;
       opacity:0;
     }
+
+.bg.active{
+  opacity:1;
+  transform:scale(1);
+  filter:brightness(.86) saturate(1.08);
+}
 
     .bg.active{
       opacity:1;
@@ -67,9 +73,9 @@
       position:fixed;
       inset:0;
       background:
-        radial-gradient(circle at center, rgba(255,255,255,.02) 0%, transparent 35%),
-        linear-gradient(to bottom, rgba(0,0,0,.18), rgba(0,0,0,.56)),
-        radial-gradient(circle at 50% 20%, transparent 0%, rgba(0,0,0,.18) 55%, rgba(0,0,0,.52) 100%);
+        radial-gradient(circle at center, rgba(255,255,255,.035) 0%, transparent 38%),
+        linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.36)),
+        radial-gradient(circle at 50% 20%, transparent 0%, rgba(0,0,0,.10) 55%, rgba(0,0,0,.34) 100%);
       pointer-events:none;
       z-index:1;
     }
@@ -123,11 +129,11 @@
       padding:38px 28px 34px;
       border-radius:30px;
       background:
-        linear-gradient(180deg, rgba(20,10,14,.78), rgba(20,10,14,.68));
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(4px);
-      -webkit-backdrop-filter:blur(4px);
+        linear-gradient(180deg, rgba(28,14,18,.66), rgba(28,14,18,.56));
+      border:1px solid rgba(255,255,255,.13);
+      box-shadow:0 22px 70px rgba(0,0,0,.38);
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
     }
 
     .card::before{
