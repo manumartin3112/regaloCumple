@@ -318,7 +318,103 @@
       white-space:pre-line;
     }
 
-  
+    .password-box{
+        max-width:460px;
+        margin:28px auto 0;
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+      }
+      
+      .password-input{
+        width:100%;
+        padding:16px 18px;
+        border-radius:16px;
+        border:1px solid rgba(255,255,255,.18);
+        background:rgba(255,255,255,.08);
+        color:var(--text);
+        font-size:18px;
+        text-align:center;
+        outline:none;
+        backdrop-filter:blur(4px);
+        -webkit-backdrop-filter:blur(4px);
+      }
+      
+      .password-input::placeholder{
+        color:rgba(255,255,255,.55);
+      }
+      
+      .password-actions{
+        display:flex;
+        gap:12px;
+        justify-content:center;
+        flex-wrap:wrap;
+      }
+      
+      .password-btn{
+        appearance:none;
+        border:none;
+        cursor:pointer;
+        padding:12px 18px;
+        border-radius:14px;
+        font-size:15px;
+        font-weight:800;
+        transition:.18s ease;
+      }
+      
+      .password-btn.primary{
+        background:var(--gold);
+        color:#24170f;
+      }
+      
+      .password-btn.secondary{
+        background:rgba(255,255,255,.08);
+        color:var(--text);
+        border:1px solid rgba(255,255,255,.14);
+      }
+      
+      .password-btn:hover{
+        transform:translateY(-1px);
+        filter:brightness(1.04);
+      }
+      
+      .password-error{
+        min-height:22px;
+        font-size:14px;
+        color:#ffd2d2;
+        opacity:.95;
+      }
+      
+      .hints-box{
+        margin-top:12px;
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+      }
+      
+      .hint-line{
+        font-size:15px;
+        color:rgba(255,255,255,.88);
+        background:rgba(255,255,255,.06);
+        border:1px solid rgba(255,255,255,.10);
+        border-radius:12px;
+        padding:10px 12px;
+      }
+      
+      .slide-password .card{
+        background:
+          linear-gradient(180deg, rgba(30,16,22,.78), rgba(30,16,22,.68));
+      }
+      
+      @media (max-width:760px){
+        .password-actions{
+          flex-direction:column;
+        }
+      
+        .password-btn{
+          width:100%;
+        }
+      }
 
     .nav{
       position:fixed;
@@ -376,7 +472,7 @@
   <div class="bg active" id="bg"
        style="background-image:
          linear-gradient(rgba(18,6,9,.14), rgba(18,6,9,.14)),
-         url('https://manumartin3112.github.io/regaloCumple/assets/img/bg1.png');"></div>
+         url('https://manumartin3112.github.io/regaloCumple/assets/img/bg0.png');"></div>
 
   <div class="veil"></div>
   <div class="grain"></div>
@@ -390,8 +486,38 @@
 
   <main class="stage" id="stage">
 
+    <!-- 0 -->
+      <section class="slide slide-password active" data-bg="bg0.jpg">
+        <div class="card">
+          <div class="eyebrow">Antes de empezar</div>
+          <h1>Introduce la contraseña</h1>
+          <p class="lead">Cuando la aciertes, podrás descubrir la sorpresa.</p>
+      
+          <div class="password-box">
+            <input
+              id="passwordInput"
+              class="password-input"
+              type="password"
+              placeholder="Escribe la contraseña"
+              autocomplete="off"
+              autocapitalize="none"
+              spellcheck="false"
+            >
+      
+            <div class="password-actions">
+              <button id="passwordSubmit" class="password-btn primary">Enviar</button>
+              <button id="hintButton" class="password-btn secondary">Pista</button>
+            </div>
+      
+            <div id="passwordError" class="password-error"></div>
+      
+            <div id="hintsBox" class="hints-box"></div>
+          </div>
+        </div>
+      </section>
+    
     <!-- 1 -->
-    <section class="slide active" data-bg="bg1.png">
+    <section class="slide" data-bg="bg1.png">
       <div class="card">
         <div class="eyebrow">Hay algo esperándote</div>
         <h1>Falta muy poco para algo especial</h1>
@@ -501,12 +627,22 @@ Y conmigo.</p>
       const dotsWrap = document.getElementById("dots");
       const stage = document.getElementById("stage");
       const bgMusic = document.getElementById("bgMusic");
+
+      const passwordInput = document.getElementById("passwordInput");
+      const passwordSubmit = document.getElementById("passwordSubmit");
+      const hintButton = document.getElementById("hintButton");
+      const passwordError = document.getElementById("passwordError");
+      const hintsBox = document.getElementById("hintsBox");
       
       bgBlur.style.backgroundImage =
-        `linear-gradient(rgba(18,6,9,.12), rgba(18,6,9,.12)), url('https://manumartin3112.github.io/regaloCumple/assets/img/bg1.png')`;
+        `linear-gradient(rgba(18,6,9,.12), rgba(18,6,9,.12)), url('https://manumartin3112.github.io/regaloCumple/assets/img/bg0.png')`;
     
       let current = 0;
       let locked = false;
+
+      const correctPassword = "dory";
+      const hints = ["pista1", "pista2", "pista3"];
+      let shownHints = 0;
     
       // Dots
       slides.forEach((_, i) => {
@@ -519,6 +655,45 @@ Y conmigo.</p>
       function vibrate(ms = 18){
         if (navigator.vibrate) navigator.vibrate(ms);
       }
+
+      function tryPassword(){
+        const value = passwordInput.value.trim().toLowerCase();
+      
+        if (value === correctPassword) {
+          passwordError.textContent = "";
+          passwordInput.value = "";
+          nextSlide();
+        } else {
+          passwordError.textContent = "Contraseña incorrecta.";
+        }
+      }
+
+      function showNextHint(){
+        if (shownHints < hints.length) {
+          const div = document.createElement("div");
+          div.className = "hint-line";
+          div.textContent = hints[shownHints];
+          hintsBox.appendChild(div);
+          shownHints++;
+        }
+      }
+
+      passwordSubmit.addEventListener("click", (e) => {
+        e.stopPropagation();
+        tryPassword();
+      });
+      
+      hintButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showNextHint();
+      });
+      
+      passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          tryPassword();
+        }
+      });
     
       function setBackground(file){
         bg.classList.remove("active");
@@ -591,11 +766,14 @@ Y conmigo.</p>
       }
     
       stage.addEventListener("click", (e) => {
-        if (["BUTTON","A"].includes(e.target.tagName)) return;
-    
+        if (["BUTTON","A","INPUT"].includes(e.target.tagName)) return;
+      
+        // En la slide 0 no se puede avanzar sin contraseña
+        if (current === 0) return;
+      
         const x = e.clientX;
         const screenMiddle = window.innerWidth / 2;
-    
+      
         if (x < screenMiddle) {
           prevSlide();
         } else {
@@ -604,6 +782,13 @@ Y conmigo.</p>
       });
     
       document.addEventListener("keydown", (e) => {
+        if (current === 0 && document.activeElement !== passwordInput) {
+          if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter" || e.key === "ArrowLeft") {
+            e.preventDefault();
+            return;
+          }
+        }
+      
         if (e.key === "ArrowRight" || e.key === " " || e.key === "Enter"){
           e.preventDefault();
           nextSlide();
