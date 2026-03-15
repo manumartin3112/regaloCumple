@@ -490,7 +490,7 @@
       <section class="slide slide-password active" data-bg="bg0.png">
         <div class="card">
           <div class="eyebrow">Antes de empezar</div>
-          <h1>Introduce la contraseña</h1>
+          <h1>Para desbloquear el regalo debes introducir la contraseña</h1>
           <p class="lead">Cuando la aciertes, podrás descubrir la sorpresa.</p>
       
           <div class="password-box">
@@ -639,6 +639,7 @@ Y conmigo.</p>
     
       let current = 0;
       let locked = false;
+      let unlocked = false;
 
       const correctPassword = "dory";
       const hints = ["pista1", "pista2", "pista3"];
@@ -662,7 +663,8 @@ Y conmigo.</p>
         if (value === correctPassword) {
           passwordError.textContent = "";
           passwordInput.value = "";
-          nextSlide();
+          unlocked = true;
+          showSlide(1);
         } else {
           passwordError.textContent = "Contraseña incorrecta.";
         }
@@ -731,6 +733,10 @@ Y conmigo.</p>
     
       function showSlide(index){
         if (locked || index < 0 || index >= slides.length) return;
+      
+        // Una vez desbloqueado, no permitir volver a la slide 0
+        if (unlocked && index === 0) return;
+      
         locked = true;
     
         slides[current].classList.remove("active");
@@ -755,12 +761,12 @@ Y conmigo.</p>
         if (current < slides.length - 1){
           showSlide(current + 1);
         } else {
-          showSlide(0);
+          showSlide(1);
         }
       }
     
       function prevSlide(){
-        if (current > 0){
+        if (current > 1){
           showSlide(current - 1);
         }
       }
