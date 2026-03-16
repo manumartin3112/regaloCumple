@@ -328,6 +328,37 @@
       white-space:pre-line;
     }
 
+    .reveal-box{
+        margin-top:24px;
+        min-height:0;
+      }
+      
+      .reveal-image{
+        display:block;
+        margin:0 auto;
+        max-width:min(100%, 540px);
+        max-height:42vh;
+        border-radius:18px;
+        border:1px solid rgba(255,255,255,.14);
+        box-shadow:0 18px 40px rgba(0,0,0,.28);
+        opacity:0;
+        transform:translateY(18px) scale(.96);
+        transition:opacity .55s ease, transform .55s ease;
+        pointer-events:none;
+      }
+      
+      .reveal-image.visible{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+      
+      @media (max-width:760px){
+        .reveal-image{
+          max-width:100%;
+          max-height:36vh;
+        }
+      }
+
     .password-box{
         max-width:460px;
         margin:28px auto 0;
@@ -586,12 +617,30 @@
     </section>
 
     <!-- 3 -->
-    <section class="slide" data-bg="bg3.jpg">
+    <!--<section class="slide" data-bg="bg3.jpg">
       <div class="card">
         <div class="eyebrow">Una noche</div>
         <h1>Quería regalarte algo más que una cosa</h1>
         <p class="lead">Quería regalarte un momento. Una noche distinta. Un recuerdo futuro.</p>
-        <div class="hint pulse">Toca para continuar</div>
+        <div class="hint pulse">Toca para continuar</div> 
+      </div>
+    </section>-->
+
+    <section class="slide" data-bg="bg3.jpg">
+      <div class="card">
+        <div class="eyebrow">Un recuerdo</div>
+        <h1>¿Recuerdas esta lista?</h1>
+    
+        <div class="reveal-box" id="listRevealBox">
+          <img
+            id="listImage"
+            class="reveal-image"
+            src="https://manumartin3112.github.io/regaloCumple/assets/img/lista.png"
+            alt="Lista de planes"
+          >
+        </div>
+    
+        <div class="hint pulse" id="slide3Hint">Toca para continuar</div>
       </div>
     </section>
 
@@ -662,6 +711,9 @@ Y conmigo.</p>
       const hintButton = document.getElementById("hintButton");
       const passwordError = document.getElementById("passwordError");
       const hintsBox = document.getElementById("hintsBox");
+
+      const listImage = document.getElementById("listImage");
+      const slide3Hint = document.getElementById("slide3Hint");
       
       bgBlur.style.backgroundImage =
         `linear-gradient(rgba(18,6,9,.12), rgba(18,6,9,.12)), url('https://manumartin3112.github.io/regaloCumple/assets/img/bg0.png')`;
@@ -669,6 +721,8 @@ Y conmigo.</p>
       let current = 0;
       let locked = false;
       let unlocked = false;
+
+      let slide3Revealed = false;
 
       const correctPassword = "1234";
       const hints = ["pista1", "pista2", "pista3"];
@@ -759,6 +813,13 @@ Y conmigo.</p>
           bgMusic.currentTime = 0;
         }
       }
+
+
+      function resetSlide3Reveal(){
+        slide3Revealed = false;
+        if (listImage) listImage.classList.remove("visible");
+        if (slide3Hint) slide3Hint.textContent = "Toca para continuar";
+      }
     
       function showSlide(index){
         if (locked || index < 0 || index >= slides.length) return;
@@ -772,6 +833,10 @@ Y conmigo.</p>
         dots[current].classList.remove("active");
     
         current = index;
+
+        if (current !== 3) {
+          resetSlide3Reveal();
+        }
     
         const bgFile = slides[current].dataset.bg;
         if (bgFile) setBackground(bgFile);
@@ -805,6 +870,15 @@ Y conmigo.</p>
       
         // En la slide 0 no se puede avanzar sin contraseña
         if (current === 0) return;
+      
+        // Comportamiento especial de la slide 3:
+        // primer click revela la lista, segundo click ya navega normal
+        if (current === 3 && !slide3Revealed) {
+          slide3Revealed = true;
+          listImage.classList.add("visible");
+          slide3Hint.textContent = "Toca para seguir";
+          return;
+        }
       
         const x = e.clientX;
         const screenMiddle = window.innerWidth / 2;
