@@ -936,30 +936,53 @@ Y conmigo.</p>
       }
       
       function revealNextSlide4Image(){
+        if (slide4Step < 3) {
+          slide4Step++;
+          renderSlide4State();
+        }
+      }
+
+      function revealPrevSlide4Image(){
         const isMobile = window.innerWidth <= 760;
       
-        slide4Step++;
+        if (!isMobile) return false;
+      
+        if (slide4Step > 1) {
+          slide4Step--;
+          renderSlide4State();
+          return true;
+        }
+      
+        if (slide4Step === 1) {
+          showSlide(3);
+          return true;
+        }
+      
+        return false;
+      }
+
+      function renderSlide4State(){
+        const isMobile = window.innerWidth <= 760;
+      
+        if (!reveal4Img1 || !reveal4Img2 || !reveal4Img3) return;
+      
+        reveal4Img1.classList.remove("visible");
+        reveal4Img2.classList.remove("visible");
+        reveal4Img3.classList.remove("visible");
       
         if (isMobile) {
-          // En móvil, solo una visible cada vez
-          reveal4Img1.classList.remove("visible");
-          reveal4Img2.classList.remove("visible");
-          reveal4Img3.classList.remove("visible");
-      
           if (slide4Step === 1) reveal4Img1.classList.add("visible");
           if (slide4Step === 2) reveal4Img2.classList.add("visible");
           if (slide4Step === 3) reveal4Img3.classList.add("visible");
         } else {
-          // En PC, se van acumulando
           if (slide4Step >= 1) reveal4Img1.classList.add("visible");
           if (slide4Step >= 2) reveal4Img2.classList.add("visible");
           if (slide4Step >= 3) reveal4Img3.classList.add("visible");
         }
       
-        if (slide4Step < 3) {
-          slide4Hint.textContent = "Toca para seguir";
-        } else {
-          slide4Hint.textContent = "Toca para continuar";
+        if (slide4Hint) {
+          slide4Hint.textContent = slide4Step < 3 ? "Toca para seguir" : "Toca para continuar";
+          if (slide4Step === 0) slide4Hint.textContent = "Toca para continuar";
         }
       }
     
@@ -983,6 +1006,11 @@ Y conmigo.</p>
         setTimeout(() => {
           slides[current].classList.add("active");
           dots[current].classList.add("active");
+
+          if (current === 4) {
+            renderSlide4State();
+          }
+          
           vibrate(12);
           handleMusicForSlide(current);
         }, 40);
@@ -999,6 +1027,12 @@ Y conmigo.</p>
       }
     
       function prevSlide(){
+        const isMobile = window.innerWidth <= 760;
+      
+        if (current === 4 && isMobile) {
+          if (revealPrevSlide4Image()) return;
+        }
+      
         if (current > 1){
           showSlide(current - 1);
         }
