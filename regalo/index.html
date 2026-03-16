@@ -346,6 +346,73 @@
         transition:opacity .55s ease, transform .55s ease;
         pointer-events:none;
       }
+
+      .reveal4-box{
+        position:relative;
+        margin-top:28px;
+        width:100%;
+        min-height:420px;
+      }
+      
+      .reveal4-image{
+        position:absolute;
+        opacity:0;
+        transform:translateY(18px) scale(.96);
+        transition:opacity .55s ease, transform .55s ease;
+        border-radius:18px;
+        border:1px solid rgba(255,255,255,.14);
+        box-shadow:0 18px 40px rgba(0,0,0,.28);
+        pointer-events:none;
+      }
+      
+      .reveal4-image.visible{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+      
+      /* Escritorio: collage progresivo */
+      .reveal4-pos1{
+        top:0;
+        left:4%;
+        width:min(32%, 260px);
+      }
+      
+      .reveal4-pos2{
+        top:0;
+        right:4%;
+        width:min(32%, 260px);
+      }
+      
+      .reveal4-pos3{
+        bottom:0;
+        left:50%;
+        transform:translateX(-50%) translateY(18px) scale(.96);
+        width:min(34%, 280px);
+      }
+      
+      .reveal4-pos3.visible{
+        transform:translateX(-50%) translateY(0) scale(1);
+      }
+      
+      /* Móvil: una sola visible cada vez */
+      @media (max-width:760px){
+        .reveal4-box{
+          min-height:300px;
+        }
+      
+        .reveal4-image{
+          top:0 !important;
+          left:50% !important;
+          right:auto !important;
+          bottom:auto !important;
+          width:min(100%, 320px) !important;
+          transform:translateX(-50%) translateY(18px) scale(.96);
+        }
+      
+        .reveal4-image.visible{
+          transform:translateX(-50%) translateY(0) scale(1);
+        }
+      }
       
       .reveal-image.visible{
         opacity:1;
@@ -645,7 +712,7 @@
     </section>
 
     <!-- 4 -->
-    <section class="slide" data-bg="bg4.jpg">
+    <!--<section class="slide" data-bg="bg4.jpg">
       <div class="card">
         <div class="eyebrow">Más cerca</div>
         <h1>Una noche distinta</h1>
@@ -653,6 +720,36 @@
 Con emoción.
 Y conmigo.</p>
         <div class="hint pulse">Toca para continuar</div>
+      </div>
+    </section> -->
+
+    <section class="slide" data-bg="bg4.jpg">
+      <div class="card">
+        <div class="eyebrow">Más cerca</div>
+        <h1>Poco a poco se va completando</h1>
+    
+        <div class="reveal4-box" id="reveal4Box">
+          <img
+            id="reveal4Img1"
+            class="reveal4-image reveal4-pos1"
+            src="https://manumartin3112.github.io/regaloCumple/assets/img/foto1.jpg"
+            alt="Foto 1"
+          >
+          <img
+            id="reveal4Img2"
+            class="reveal4-image reveal4-pos2"
+            src="https://manumartin3112.github.io/regaloCumple/assets/img/foto2.jpg"
+            alt="Foto 2"
+          >
+          <img
+            id="reveal4Img3"
+            class="reveal4-image reveal4-pos3"
+            src="https://manumartin3112.github.io/regaloCumple/assets/img/foto3.jpg"
+            alt="Foto 3"
+          >
+        </div>
+    
+        <div class="hint pulse" id="slide4Hint">Toca para continuar</div>
       </div>
     </section>
 
@@ -714,6 +811,11 @@ Y conmigo.</p>
 
       const listImage = document.getElementById("listImage");
       const slide3Hint = document.getElementById("slide3Hint");
+
+      const reveal4Img1 = document.getElementById("reveal4Img1");
+      const reveal4Img2 = document.getElementById("reveal4Img2");
+      const reveal4Img3 = document.getElementById("reveal4Img3");
+      const slide4Hint = document.getElementById("slide4Hint");
       
       bgBlur.style.backgroundImage =
         `linear-gradient(rgba(18,6,9,.12), rgba(18,6,9,.12)), url('https://manumartin3112.github.io/regaloCumple/assets/img/bg0.png')`;
@@ -723,6 +825,8 @@ Y conmigo.</p>
       let unlocked = false;
 
       let slide3Revealed = false;
+
+      let slide4Step = 0;
 
       const correctPassword = "1234";
       const hints = ["pista1", "pista2", "pista3"];
@@ -820,6 +924,44 @@ Y conmigo.</p>
         if (listImage) listImage.classList.remove("visible");
         if (slide3Hint) slide3Hint.textContent = "Toca para continuar";
       }
+
+      function resetSlide4Reveal(){
+        slide4Step = 0;
+      
+        if (reveal4Img1) reveal4Img1.classList.remove("visible");
+        if (reveal4Img2) reveal4Img2.classList.remove("visible");
+        if (reveal4Img3) reveal4Img3.classList.remove("visible");
+      
+        if (slide4Hint) slide4Hint.textContent = "Toca para continuar";
+      }
+      
+      function revealNextSlide4Image(){
+        const isMobile = window.innerWidth <= 760;
+      
+        slide4Step++;
+      
+        if (isMobile) {
+          // En móvil, solo una visible cada vez
+          reveal4Img1.classList.remove("visible");
+          reveal4Img2.classList.remove("visible");
+          reveal4Img3.classList.remove("visible");
+      
+          if (slide4Step === 1) reveal4Img1.classList.add("visible");
+          if (slide4Step === 2) reveal4Img2.classList.add("visible");
+          if (slide4Step === 3) reveal4Img3.classList.add("visible");
+        } else {
+          // En PC, se van acumulando
+          if (slide4Step >= 1) reveal4Img1.classList.add("visible");
+          if (slide4Step >= 2) reveal4Img2.classList.add("visible");
+          if (slide4Step >= 3) reveal4Img3.classList.add("visible");
+        }
+      
+        if (slide4Step < 3) {
+          slide4Hint.textContent = "Toca para seguir";
+        } else {
+          slide4Hint.textContent = "Toca para continuar";
+        }
+      }
     
       function showSlide(index){
         if (locked || index < 0 || index >= slides.length) return;
@@ -874,6 +1016,11 @@ Y conmigo.</p>
           slide3Revealed = true;
           listImage.classList.add("visible");
           slide3Hint.textContent = "Toca para seguir";
+          return;
+        }
+
+        if (current === 4 && slide4Step < 3) {
+          revealNextSlide4Image();
           return;
         }
       
