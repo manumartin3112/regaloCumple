@@ -942,24 +942,7 @@ Y conmigo.</p>
         }
       }
 
-      function revealPrevSlide4Image(){
-        const isMobile = window.innerWidth <= 760;
       
-        if (!isMobile) return false;
-      
-        if (slide4Step > 1) {
-          slide4Step--;
-          renderSlide4State();
-          return true;
-        }
-      
-        if (slide4Step === 1) {
-          showSlide(3);
-          return true;
-        }
-      
-        return false;
-      }
 
       function renderSlide4State(){
         const isMobile = window.innerWidth <= 760;
@@ -1027,12 +1010,6 @@ Y conmigo.</p>
       }
     
       function prevSlide(){
-        const isMobile = window.innerWidth <= 760;
-      
-        if (current === 4 && isMobile) {
-          if (revealPrevSlide4Image()) return;
-        }
-      
         if (current > 1){
           showSlide(current - 1);
         }
@@ -1044,24 +1021,54 @@ Y conmigo.</p>
         // En la slide 0 no se puede avanzar sin contraseña
         if (current === 0) return;
       
-        // Comportamiento especial de la slide 3:
-        // primer click revela la lista, segundo click ya navega normal
+        const x = e.clientX;
+        const screenMiddle = window.innerWidth / 2;
+        const isLeft = x < screenMiddle;
+        const isMobile = window.innerWidth <= 760;
+      
+        // Slide 3: primer click revela la lista
         if (current === 3 && !slide3Revealed) {
           slide3Revealed = true;
           listImage.classList.add("visible");
           slide3Hint.textContent = "Toca para seguir";
           return;
         }
-
-        if (current === 4 && slide4Step < 3) {
-          revealNextSlide4Image();
-          return;
+      
+        // Slide 4 en móvil: navegación interna reversible
+        if (current === 4 && isMobile) {
+          if (isLeft) {
+            if (slide4Step > 1) {
+              slide4Step--;
+              renderSlide4State();
+              return;
+            }
+            if (slide4Step === 1) {
+              showSlide(3);
+              return;
+            }
+            // si slide4Step === 0, comportamiento normal:
+            prevSlide();
+            return;
+          } else {
+            if (slide4Step < 3) {
+              slide4Step++;
+              renderSlide4State();
+              return;
+            }
+            nextSlide();
+            return;
+          }
         }
       
-        const x = e.clientX;
-        const screenMiddle = window.innerWidth / 2;
+        // Slide 4 en escritorio: revelar progresivamente y luego navegar
+        if (current === 4 && !isMobile) {
+          if (slide4Step < 3) {
+            revealNextSlide4Image();
+            return;
+          }
+        }
       
-        if (x < screenMiddle) {
+        if (isLeft) {
           prevSlide();
         } else {
           nextSlide();
