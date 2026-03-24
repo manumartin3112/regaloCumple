@@ -229,6 +229,37 @@
         color:rgba(255,246,235,.96);
       }
 
+
+      .slide-photos .card{
+        background:
+          linear-gradient(180deg, rgba(78,50,34,.40), rgba(40,26,20,.50));
+        border:1px solid rgba(226,184,113,.16);
+        box-shadow:0 24px 72px rgba(0,0,0,.28);
+        backdrop-filter:blur(4px);
+        -webkit-backdrop-filter:blur(4px);
+      }
+      
+      .slide-photos .card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:
+          linear-gradient(120deg, rgba(255,255,255,.04), transparent 32%, transparent 68%, rgba(226,184,113,.03));
+        pointer-events:none;
+      }
+      
+      .slide-photos .eyebrow{
+        color:rgba(247,229,198,.90);
+        border:1px solid rgba(226,184,113,.16);
+        background:rgba(226,184,113,.05);
+      }
+      
+      .slide-photos h1,
+      .slide-photos .lead,
+      .slide-photos .hint{
+        color:rgba(255,246,236,.96);
+      }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -1023,7 +1054,7 @@ Y conmigo.</p>
       </div>
     </section> -->
 
-    <section class="slide" data-bg="bg4.jpg">
+    <section class="slide slide-photos" data-bg="bg4.jpg">
       <div class="card">
         <div class="eyebrow">Más cerca</div>
         <h1>Poco a poco se va completando</h1>
