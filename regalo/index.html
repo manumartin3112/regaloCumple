@@ -260,6 +260,37 @@
         color:rgba(255,246,236,.96);
       }
 
+
+      .slide-casi .card{
+        background:
+          linear-gradient(180deg, rgba(60,34,42,.40), rgba(34,20,28,.48));
+        border:1px solid rgba(224,170,106,.16);
+        box-shadow:0 24px 72px rgba(0,0,0,.30);
+        backdrop-filter:blur(4px);
+        -webkit-backdrop-filter:blur(4px);
+      }
+      
+      .slide-casi .card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:
+          linear-gradient(120deg, rgba(255,255,255,.04), transparent 32%, transparent 68%, rgba(224,170,106,.03));
+        pointer-events:none;
+      }
+      
+      .slide-casi .eyebrow{
+        color:rgba(248,227,198,.90);
+        border:1px solid rgba(224,170,106,.16);
+        background:rgba(224,170,106,.05);
+      }
+      
+      .slide-casi h1,
+      .slide-casi .lead,
+      .slide-casi .hint{
+        color:rgba(255,245,236,.96);
+      }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -1085,7 +1116,7 @@ Y conmigo.</p>
     </section>
 
     <!-- 5 -->
-    <section class="slide" data-bg="bg5.jpg">
+    <section class="slide slide-casi" data-bg="bg5.jpg">
       <div class="card">
         <div class="eyebrow">Casi casi</div>
         <h1>Hay noches que se sienten especiales incluso antes de empezar</h1>
