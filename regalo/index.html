@@ -1333,6 +1333,7 @@ Y conmigo.</p>
       passwordInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
+          e.stopPropagation();
           tryPassword();
         }
       });
