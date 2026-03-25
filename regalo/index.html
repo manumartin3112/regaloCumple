@@ -291,6 +291,37 @@
         color:rgba(255,245,236,.96);
       }
 
+
+    .slide-time .card{
+      background:
+        linear-gradient(180deg, rgba(52,32,40,.34), rgba(34,20,28,.28));
+      border:1px solid rgba(255,245,235,.14);
+      box-shadow:0 22px 64px rgba(0,0,0,.22);
+      backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px);
+    }
+    
+    .slide-time .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.045), transparent 32%, transparent 68%, rgba(255,255,255,.025));
+      pointer-events:none;
+    }
+    
+    .slide-time .eyebrow{
+      color:rgba(247,236,224,.88);
+      border:1px solid rgba(255,245,235,.14);
+      background:rgba(255,255,255,.04);
+    }
+    
+    .slide-time h1,
+    .slide-time .lead,
+    .slide-time .hint{
+      color:rgba(255,248,242,.96);
+    }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -1129,7 +1160,7 @@ Y conmigo.</p>
     </section>
 
     <!-- 7 -->
-    <section class="slide" data-bg="bg6.jpg">
+    <section class="slide slide-time" data-bg="bg6.jpg">
       <div class="card">
         <div class="eyebrow">Tu sorpresa</div>
         <h1>Martes 8 de septiembre · 21:00</h1>
