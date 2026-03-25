@@ -639,6 +639,21 @@
         border-radius:12px;
         padding:10px 12px;
       }
+
+      .hint-line-image{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:6px 10px;
+        min-height:42px;
+      }
+      
+      .hint-mini-image{
+        display:block;
+        width:22px;
+        height:22px;
+        object-fit:contain;
+      }
       
       .slide-password .card{
         background:
@@ -1229,8 +1244,16 @@ Y conmigo.</p>
 
       let slide4Step = 0;
 
-      const correctPassword = "1234";
-      const hints = ["pista1", "pista2", "pista3"];
+      const correctPassword = "dory";
+      const hints = [
+        { type: "text", value: "Personaje de película" },
+        { type: "text", value: "Mote" },
+        {
+          type: "image",
+          src: "https://manumartin3112.github.io/regaloCumple/assets/img/pista_pez.png",
+          alt: "Pista del pez"
+        }
+      ];
       let shownHints = 0;
     
       // Dots
@@ -1275,9 +1298,23 @@ Y conmigo.</p>
 
       function showNextHint(){
         if (shownHints < hints.length) {
+          const hint = hints[shownHints];
           const div = document.createElement("div");
           div.className = "hint-line";
-          div.textContent = hints[shownHints];
+      
+          if (hint.type === "image") {
+            div.classList.add("hint-line-image");
+      
+            const img = document.createElement("img");
+            img.src = hint.src;
+            img.alt = hint.alt || "Pista";
+            img.className = "hint-mini-image";
+      
+            div.appendChild(img);
+          } else {
+            div.textContent = hint.value;
+          }
+      
           hintsBox.appendChild(div);
           shownHints++;
         }
