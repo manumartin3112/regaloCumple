@@ -322,6 +322,24 @@
       color:rgba(255,248,242,.96);
     }
 
+    .slide-soft .card{
+        background:
+          linear-gradient(180deg, rgba(34,18,23,.58), rgba(34,18,23,.50));
+        border:1px solid rgba(255,255,255,.14);
+        box-shadow:0 22px 70px rgba(0,0,0,.26);
+        backdrop-filter:blur(3px);
+        -webkit-backdrop-filter:blur(3px);
+      }
+      
+      .slide-soft .card::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:
+          linear-gradient(120deg, rgba(255,255,255,.045), transparent 32%, transparent 68%, rgba(255,255,255,.03));
+        pointer-events:none;
+      }
+
     .eyebrow{
       display:inline-flex;
       align-items:center;
@@ -1063,7 +1081,7 @@
       </section>
     
     <!-- 1 -->
-    <section class="slide" data-bg="bg14.png">
+    <section class="slide slide-soft" data-bg="bg14.png">
       <div class="card">
         <div class="eyebrow">Hay algo esperándote</div>
         <h1>Falta muy poco para algo especial</h1>
@@ -1093,7 +1111,7 @@
     </section>
 
     <!-- 2 -->
-    <section class="slide" data-bg="bg2.png">
+    <section class="slide slide-soft" data-bg="bg2.png">
       <div class="card">
         <h1>No todos los regalos se envuelven</h1>
         <p class="lead">Algunos no caben en una caja. Algunos se viven.</p>
