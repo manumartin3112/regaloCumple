@@ -719,15 +719,15 @@
       bottom:0;
       width:50.5%;
       background:
-        linear-gradient(135deg, rgba(255,255,255,.045), transparent 34%, transparent 62%, rgba(255,255,255,.02)),
-        linear-gradient(180deg, rgba(220,200,150,.05), rgba(40,70,58,.05)),
+        linear-gradient(135deg, rgba(255,255,255,.16), transparent 34%, transparent 62%, rgba(255,255,255,.06)),
+        linear-gradient(180deg, rgba(255,240,246,.18), rgba(245,220,230,.10)),
         repeating-linear-gradient(
           45deg,
-          rgba(255,255,255,.016) 0 12px,
-          rgba(0,0,0,.022) 12px 24px
+          rgba(255,255,255,.045) 0 12px,
+          rgba(0,0,0,.018) 12px 24px
         ),
-        linear-gradient(180deg, #1f3a35, #132621);
-      box-shadow:inset 0 0 80px rgba(0,0,0,.18);
+        linear-gradient(180deg, #f6ebe9, #e8d6d2);
+      box-shadow:inset 0 0 60px rgba(120,80,90,.08);
       transition:
         transform 1.05s cubic-bezier(.22,.8,.16,1),
         opacity .85s ease,
@@ -740,9 +740,9 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg, transparent 0 44%, rgba(212,187,136,.84) 44% 56%, transparent 56% 100%);
-      opacity:.95;
-      mix-blend-mode:screen;
+        linear-gradient(90deg, transparent 0 44%, rgba(236,151,177,.78) 44% 56%, transparent 56% 100%);
+      opacity:.96;
+      mix-blend-mode:multiply;
     }
     
     .gift-wrap__panel::after{
@@ -753,26 +753,26 @@
       top:50%;
       height:22px;
       transform:translateY(-50%);
-      background:rgba(212,187,136,.88);
-      box-shadow:0 0 22px rgba(212,187,136,.14);
+      background:rgba(232,129,161,.84);
+      box-shadow:0 0 18px rgba(232,129,161,.12);
     }
     
     .gift-wrap__text{
       text-align:center;
       padding:18px 20px;
       border-radius:22px;
-      background:rgba(18,34,30,.26);
-      border:1px solid rgba(239,226,194,.14);
+      background:rgba(112,72,82,.14);
+      border:1px solid rgba(255,255,255,.26);
       backdrop-filter:blur(6px);
       -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 16px 40px rgba(0,0,0,.18);
+      box-shadow:0 16px 34px rgba(80,40,50,.10);
     }
     
     .gift-wrap__eyebrow{
       font-size:12px;
       letter-spacing:.18em;
       text-transform:uppercase;
-      color:rgba(242,232,210,.82);
+      color:rgba(120,80,92,.82);
       margin-bottom:10px;
     }
     
@@ -780,8 +780,8 @@
       font-size:clamp(24px, 4.2vw, 42px);
       font-weight:900;
       letter-spacing:-.04em;
-      color:#fff8f0;
-      text-shadow:0 8px 24px rgba(0,0,0,.28);
+      color:#fffaf8;
+      text-shadow:0 8px 18px rgba(90,50,60,.14);
     }
 
     
@@ -831,16 +831,6 @@
       background:rgba(255,255,255,.03);
     }
 
-    .gift-bow__loop--left{
-      left:10px;
-      transform:rotate(-22deg);
-    }
-
-    .gift-bow__loop--right{
-      right:10px;
-      transform:rotate(22deg);
-    }
-
     .gift-bow__knot{
       position:absolute;
       left:50%;
@@ -861,6 +851,18 @@
       background:linear-gradient(180deg, #d53a48, #b11f30);
       border-radius:12px;
     }
+
+    .gift-bow__loop--left{
+      left:10px;
+      transform:rotate(-22deg);
+    }
+
+    .gift-bow__loop--right{
+      right:10px;
+      transform:rotate(22deg);
+    }
+
+    
 
     .gift-bow__tail--left{
       left:68px;
