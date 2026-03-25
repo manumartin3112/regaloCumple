@@ -719,14 +719,14 @@
       bottom:0;
       width:50.5%;
       background:
-        linear-gradient(135deg, rgba(255,255,255,.06), transparent 34%, transparent 62%, rgba(255,255,255,.03)),
-        linear-gradient(180deg, rgba(190,165,124,.18), rgba(122,88,58,.14)),
+        linear-gradient(135deg, rgba(255,255,255,.05), transparent 34%, transparent 62%, rgba(255,255,255,.025)),
+        linear-gradient(180deg, rgba(120,140,180,.10), rgba(40,52,78,.10)),
         repeating-linear-gradient(
           45deg,
-          rgba(255,255,255,.03) 0 12px,
+          rgba(255,255,255,.02) 0 12px,
           rgba(0,0,0,.02) 12px 24px
         ),
-        linear-gradient(180deg, #7d5b43, #5c4031);
+        linear-gradient(180deg, #243247, #162132);
       box-shadow:inset 0 0 80px rgba(0,0,0,.18);
       transition:
         transform 1.05s cubic-bezier(.22,.8,.16,1),
@@ -734,6 +734,57 @@
         filter .85s ease;
       will-change:transform, opacity;
     }
+    
+    .gift-wrap__panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, transparent 0 44%, rgba(128,20,34,.82) 44% 56%, transparent 56% 100%);
+      opacity:.95;
+      mix-blend-mode:screen;
+    }
+    
+    .gift-wrap__panel::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      top:50%;
+      height:22px;
+      transform:translateY(-50%);
+      background:rgba(128,20,34,.88);
+      box-shadow:0 0 24px rgba(128,20,34,.16);
+    }
+    
+    .gift-wrap__text{
+      text-align:center;
+      padding:18px 20px;
+      border-radius:22px;
+      background:rgba(18,24,36,.28);
+      border:1px solid rgba(232,216,194,.14);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      box-shadow:0 16px 40px rgba(0,0,0,.18);
+    }
+    
+    .gift-wrap__eyebrow{
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(238,226,208,.82);
+      margin-bottom:10px;
+    }
+    
+    .gift-wrap__title{
+      font-size:clamp(24px, 4.2vw, 42px);
+      font-weight:900;
+      letter-spacing:-.04em;
+      color:#fff7ee;
+      text-shadow:0 8px 24px rgba(0,0,0,.28);
+    }
+
+    
 
     .gift-wrap__panel--left{
       left:0;
@@ -745,27 +796,7 @@
       border-left:4px solid rgba(232,210,170,.24);
     }
 
-    .gift-wrap__panel::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, transparent 0 44%, rgba(194,42,57,.85) 44% 56%, transparent 56% 100%);
-      opacity:.95;
-      mix-blend-mode:screen;
-    }
-
-    .gift-wrap__panel::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      top:50%;
-      height:22px;
-      transform:translateY(-50%);
-      background:rgba(194,42,57,.9);
-      box-shadow:0 0 24px rgba(194,42,57,.16);
-    }
+    
 
     .gift-wrap__center{
       position:absolute;
@@ -841,35 +872,7 @@
       transform:rotate(-8deg);
     }
 
-    .gift-wrap__text{
-      text-align:center;
-      padding:18px 20px;
-      border-radius:22px;
-      background:rgba(22,18,16,.26);
-      border:1px solid rgba(255,245,230,.14);
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
-      box-shadow:0 16px 40px rgba(0,0,0,.18);
-      transition:
-        transform .75s cubic-bezier(.22,.8,.16,1),
-        opacity .55s ease;
-    }
-
-    .gift-wrap__eyebrow{
-      font-size:12px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:rgba(255,238,214,.82);
-      margin-bottom:10px;
-    }
-
-    .gift-wrap__title{
-      font-size:clamp(24px, 4.2vw, 42px);
-      font-weight:900;
-      letter-spacing:-.04em;
-      color:#fff6ea;
-      text-shadow:0 8px 24px rgba(0,0,0,.28);
-    }
+    
 
     .gift-wrap.opening .gift-wrap__panel--left{
       transform:translateX(-108%) rotate(-8deg);
@@ -960,7 +963,7 @@
       </div>
   
       <div class="gift-wrap__text">
-        <div class="gift-wrap__title">Toca para abrir</div>
+        <div class="gift-wrap__title">Pulsa para abrir</div>
       </div>
     </div>
   </div>
